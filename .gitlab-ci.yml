@@ -6,34 +6,26 @@ build_website:
   image: node:22-alpine
   stage: build
   script:
-    - echo "Starting build..."
     - node --version
     - npm --version
     - npm ci
     - npm run build
   artifacts:
-    paths:
+    paths: 
       - build/
 
-test_website:
-  image: node:22-alpine
+test_artifact:
+  image: alpine
   stage: test
   script:
-    - echo "Testing if build is successful"
-    - test -f build/index.html && echo "✅ index.html found!" || (echo "❌ index.html missing!" && exit 1)
-  dependencies:
-    - build_website
+    - test -f build/index.html
 
-unit_test:
+unit_tests:
   image: node:22-alpine
   stage: test
   script:
-    - echo "Running unit tests..."
     - npm ci
-    # Run your tests and output a JUnit report
-    - npm test -- --ci --reporters=default --reporters=jest-junit
-  dependencies:
-    - build_website
+    - npm test
   artifacts:
     when: always
     reports:
