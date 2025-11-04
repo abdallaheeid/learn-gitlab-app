@@ -1,5 +1,16 @@
-test_npm:
+stages:
+  - build
+  - test
+
+build_website:
   image: node:22-alpine
+  stage: build
   script:
+    - echo "Starting build..."
     - node --version
     - npm --version
+    - ls -la
+    - npm ci
+    - npm run build
+    - ls -la
+  
