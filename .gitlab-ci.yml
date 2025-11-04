@@ -38,6 +38,3 @@ unit_test:
     when: always
     reports:
       junit: reports/junit.xml
-    paths:
-      - junit.xml
-      - coverage/
