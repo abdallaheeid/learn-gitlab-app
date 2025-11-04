@@ -13,5 +13,5 @@ build_website:
     - npm run build
   artifacts:
     paths:
-      - dist/
+      - build/
   
