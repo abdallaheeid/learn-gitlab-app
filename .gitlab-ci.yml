@@ -1,6 +1,7 @@
 stages:
   - build
   - test
+  - unit
 
 build_website:
   image: node:22-alpine
@@ -21,6 +22,17 @@ test_website:
   script:
     - echo "Testing if build is successful"
     - test -f build/index.html && echo "✅ index.html found!" || (echo "❌ index.html missing!" && exit 1)
+  dependencies:
+    - build_website
+
+unit_test:
+  image: node:22-alpine
+  stage: unit
+  script:
+    - npm ci
+    - npm test
+  dependencies:
+    - build_website
   
 
   
