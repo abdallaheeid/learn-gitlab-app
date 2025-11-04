@@ -8,4 +8,5 @@ This simple web appplication uses React + Vite.
 ```
 npm install 
 npm run build
+npm test
 ```
