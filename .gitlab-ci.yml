@@ -28,10 +28,16 @@ unit_test:
   image: node:22-alpine
   stage: test
   script:
+    - echo "Running unit tests..."
     - npm ci
-    - npm test
+    # Run your tests and output a JUnit report
+    - npm test -- --ci --reporters=default --reporters=jest-junit
   dependencies:
     - build_website
-  
-
-  
+  artifacts:
+    when: always
+    reports:
+      junit: reports/junit.xml
+    paths:
+      - junit.xml
+      - coverage/
