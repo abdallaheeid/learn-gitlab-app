@@ -14,4 +14,13 @@ build_website:
   artifacts:
     paths:
       - build/
+
+test_website:
+  image: node:22-alpine
+  stage: test
+  script:
+    - echo "Testing if build is successful"
+    - test -f build/index.html && echo "✅ index.html found!" || (echo "❌ index.html missing!" && exit 1)
+  
+
   
