@@ -4,6 +4,7 @@ variables:
 stages:
   - build
   - test
+  - deploy_review
   - deploy_staging
   - deploy_prod
 
@@ -16,7 +17,7 @@ build_website:
     - npm ci
     - npm run build
   artifacts:
-    paths: 
+    paths:
       - build/
 
 .build_website:
@@ -26,7 +27,7 @@ build_website:
     - mkdir build
     - echo "<h1>Learn Gitlab<h1>" >> 'build/index.html'
   artifacts:
-    paths: 
+    paths:
       - build/
 
 test_artifact:
@@ -56,6 +57,16 @@ unit_tests:
     reports:
       codequality: gl-codequality.json
 
+netlify_review:
+  image: node:22-alpine
+  stage: deploy_review
+  before_script:
+    - npm install -g netlify-cli@20.1.1
+    - apk add --no-cache curl
+  script:
+    - netlify --version
+    - netlify status
+    - netlify deploy --dir=build --site=$NETLIFY_SITE_ID --auth=$NETLIFY_AUTH_TOKEN
 
 netlify_prod:
   image: node:22-alpine
@@ -67,11 +78,10 @@ netlify_prod:
     - netlify --version
     - netlify status
     - netlify deploy --dir=build --site=$NETLIFY_SITE_ID --auth=$NETLIFY_AUTH_TOKEN --prod
-    - echo "Verifying Deployment"
+    - echo "Verifying Deployments"
     - curl 'https://abdallaheid-learn-gitlab.netlify.app/' | grep 'GitLab'
   only:
     - main
-
 
 netlify_staging:
   image: node:22-alpine
@@ -87,8 +97,3 @@ netlify_staging:
     - curl 'https://staging--abdallaheid-learn-gitlab.netlify.app/' | grep 'GitLab'
   only:
     - main
-
-
-
-
-
