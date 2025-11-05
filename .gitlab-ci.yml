@@ -60,7 +60,6 @@ unit_tests:
 netlify_prod:
   image: node:22-alpine
   stage: deploy_prod
-  when: manual
   before_script:
     - npm install -g netlify-cli@20.1.1
     - apk add --no-cache curl
