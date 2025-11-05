@@ -1,3 +1,8 @@
+workflow:
+  rules:
+    - if: '$CI_PIPELINE_SOURCE == "merge_request_event"'
+    - if: $CI_COMMIT_BRANCH == $CI_DEFAULT_BRANCH
+
 variables:
   NETLIFY_SITE_ID: 'cba9b98b-9a6a-4907-b1bb-5c253fa98428'
 
@@ -17,17 +22,7 @@ build_website:
     - npm ci
     - npm run build
   artifacts:
-    paths:
-      - build/
-
-.build_website:
-  image: alpine
-  stage: build
-  script:
-    - mkdir build
-    - echo "<h1>Learn Gitlab<h1>" >> 'build/index.html'
-  artifacts:
-    paths:
+    paths: 
       - build/
 
 test_artifact:
@@ -47,53 +42,49 @@ unit_tests:
     reports:
       junit: reports/junit.xml
 
-.eslint:
-  image: node:22-alpine
-  stage: .pre
-  script:
-    - npm ci
-    - npm run lint
-  artifacts:
-    reports:
-      codequality: gl-codequality.json
-
 netlify_review:
   image: node:22-alpine
   stage: deploy_review
-  before_script:
+  rules:
+    - if: $CI_COMMIT_REF_NAME != $CI_DEFAULT_BRANCH
+  before_script: 
     - npm install -g netlify-cli@20.1.1
-    - apk add --no-cache curl
+    - apk add curl
   script:
     - netlify --version
     - netlify status
-    - netlify deploy --dir=build --site=$NETLIFY_SITE_ID --auth=$NETLIFY_AUTH_TOKEN
-
-netlify_prod:
-  image: node:22-alpine
-  stage: deploy_prod
-  before_script:
-    - npm install -g netlify-cli@20.1.1
-    - apk add --no-cache curl
-  script:
-    - netlify --version
-    - netlify status
-    - netlify deploy --dir=build --site=$NETLIFY_SITE_ID --auth=$NETLIFY_AUTH_TOKEN --prod
-    - echo "Verifying Deployments"
-    - curl 'https://abdallaheid-learn-gitlab.netlify.app/' | grep 'GitLab'
-  only:
-    - main
+    - echo "Deploying to site id $NETLIFY_SITE_ID"
+    - netlify deploy --dir build
 
 netlify_staging:
   image: node:22-alpine
   stage: deploy_staging
-  before_script:
+  rules:
+    - if: $CI_COMMIT_REF_NAME == $CI_DEFAULT_BRANCH
+  before_script: 
     - npm install -g netlify-cli@20.1.1
-    - apk add --no-cache curl
+    - apk add curl
   script:
     - netlify --version
     - netlify status
-    - netlify deploy --alias staging --dir=build --site=$NETLIFY_SITE_ID --auth=$NETLIFY_AUTH_TOKEN
-    - echo "Verifying Deployment"
-    - curl 'https://staging--abdallaheid-learn-gitlab.netlify.app/' | grep 'GitLab'
-  only:
-    - main
+    - echo "Deploying to site id $NETLIFY_SITE_ID"
+    - netlify deploy --alias staging --dir build
+    - curl 'https://staging--vdespa5-learn-gitlab.netlify.app/' | grep 'GitLab'
+
+netlify_prod:
+  image: node:22-alpine
+  stage: deploy_prod
+  rules:
+    - if: $CI_COMMIT_REF_NAME == $CI_DEFAULT_BRANCH
+  before_script: 
+    - npm install -g netlify-cli@20.1.1
+    - apk add curl
+  script:
+    - netlify --version
+    - netlify status
+    - echo "Deploying to site id $NETLIFY_SITE_ID"
+    - netlify deploy --prod --dir build
+    - curl 'https://vdespa5-learn-gitlab.netlify.app/' | grep 'GitLab'
+
+
+
