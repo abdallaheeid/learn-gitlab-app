@@ -1,8 +1,9 @@
 stages:
   - build
   - test
+  - deploy
 
-.build_website:
+build_website:
   image: node:22-alpine
   stage: build
   script:
@@ -14,7 +15,7 @@ stages:
     paths: 
       - build/
 
-build_website:
+.build_website:
   image: alpine
   stage: build
   script:
@@ -24,13 +25,13 @@ build_website:
     paths: 
       - build/
 
-.test_artifact:
+test_artifact:
   image: alpine
   stage: test
   script:
     - test -f build/index.html
 
-.unit_tests:
+unit_tests:
   image: node:22-alpine
   stage: test
   script:
@@ -41,7 +42,7 @@ build_website:
     reports:
       junit: reports/junit.xml
 
-eslint:
+.eslint:
   image: node:22-alpine
   stage: .pre
   script:
@@ -50,3 +51,25 @@ eslint:
   artifacts:
     reports:
       codequality: gl-codequality.json
+
+
+netlify:
+  image: node:22-alpine
+  stage: deploy
+  variables:
+    NETLIFY_SITE_ID: 'cba9b98b-9a6a-4907-b1bb-5c253fa98428'
+  script:
+    - echo "Deploying to Netlify..."
+    - npm install -g netlify-cli@20.1.1
+    - netlify --version
+    - echo "Deploy to side id $NETLIFY_SITE_ID"
+    - netlify status
+    - netlify deploy --dir=build --site=$NETLIFY_SITE_ID --auth=$NETLIFY_AUTH_TOKEN --prod
+    # Verification Step
+    - echo "Verifying Deployment"
+    - apk add --no-cache curl
+    # Smoke tests
+    - curl 'https://abdallaheid-learn-gitlab.netlify.app/' | grep 'GitLab'
+
+
+
