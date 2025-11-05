@@ -70,6 +70,8 @@ netlify:
     - apk add --no-cache curl
     # Smoke tests
     - curl 'https://abdallaheid-learn-gitlab.netlify.app/' | grep 'GitLab'
+  only:
+    - main
 
 
 
