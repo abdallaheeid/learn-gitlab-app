@@ -80,6 +80,8 @@ e2e:
     - npm run e2e
   artifacts:
     when: always
+    paths:
+      - reports/
     reports:
       junit: reports/playwright-junit.xml
 
