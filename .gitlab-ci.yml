@@ -79,7 +79,7 @@ netlify_staging:
     - netlify status
     - echo "Deploying to site id $NETLIFY_SITE_ID"
     - netlify deploy --alias staging --dir build
-    - curl 'https://staging--vdespa5-learn-gitlab.netlify.app/' | grep 'GitLab'
+    - curl 'https://staging--abdallaheid-learn-gitlab.netlify.app' | grep 'GitLab'
 
 netlify_prod:
   image: node:22-alpine
@@ -94,7 +94,7 @@ netlify_prod:
     - netlify status
     - echo "Deploying to site id $NETLIFY_SITE_ID"
     - netlify deploy --prod --dir build
-    - curl 'https://vdespa5-learn-gitlab.netlify.app/' | grep 'GitLab'
+    - curl 'https://abdallaheid-learn-gitlab.netlify.app' | grep 'GitLab'
 
 
 
