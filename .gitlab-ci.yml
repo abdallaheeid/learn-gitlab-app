@@ -70,7 +70,6 @@ netlify_review:
 e2e:
   image: mcr.microsoft.com/playwright:v1.49.1-noble 
   stage: post_deploy_review
-  needs: ["netlify_review"]
   variables:
     APP_BASE_URL: $DEPLOY_URL
   before_script:
