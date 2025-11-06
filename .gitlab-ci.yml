@@ -47,6 +47,9 @@ netlify_review:
   stage: deploy_review
   rules:
     - if: $CI_COMMIT_REF_NAME != $CI_DEFAULT_BRANCH
+  environment:
+    name: preview/$CI_COMMIT_REF_SLUG
+    url: $DEPLOY_URL
   before_script: 
     - npm install -g netlify-cli@20.1.1
     - apk add curl jq
@@ -57,7 +60,11 @@ netlify_review:
     - REPONSE=$(netlify deploy --dir build --json)
     - echo $RESPONSE
     - DEPLOY_URL=$(echo "$REPONSE" | jq -r '.deploy_url')
-    - echo "Deploy URL = $DEPLOY_URL"
+    - echo "DEPLOY_URL=$DEPLOY_URL" > deploy.env
+    - cat deploy.env
+  artifacts:
+    reports:
+      dotenv: deploy.env
 
 netlify_staging:
   image: node:22-alpine
