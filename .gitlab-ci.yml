@@ -49,12 +49,15 @@ netlify_review:
     - if: $CI_COMMIT_REF_NAME != $CI_DEFAULT_BRANCH
   before_script: 
     - npm install -g netlify-cli@20.1.1
-    - apk add curl
+    - apk add curl jq
   script:
     - netlify --version
     - netlify status
     - echo "Deploying to site id $NETLIFY_SITE_ID"
-    - netlify deploy --dir build
+    - REPONSE=$(netlify deploy --dir build --json)
+    - echo $RESPONSE
+    - DEPLOY_URL=$(echo "$REPONSE" | jq -r '.deploy_url')
+    - echo "Deploy URL = $DEPLOY_URL"
 
 netlify_staging:
   image: node:22-alpine
