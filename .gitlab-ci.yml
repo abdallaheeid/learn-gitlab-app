@@ -78,6 +78,10 @@ e2e:
     - echo $DEPLOY_URL
     - echo $APP_BASE_URL
     - npm run e2e
+  artifacts:
+    when: always
+    reports:
+      junit: reports/junit.xml
 
 netlify_staging:
   image: node:22-alpine
