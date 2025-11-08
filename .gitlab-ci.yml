@@ -182,11 +182,9 @@ ssh_depoly:
   script:
     - nc -zv "$REMOTE_HOST" 22
     - chmod 400 $SSH_PRIVATE_KEY
-    - mkdir -p ~/.ssh
-    - echo "$SSH_PRIVATE_KEY" > ~/.ssh/id_rsa
-    - chmod 600 ~/.ssh/id_rsa
-    # Add host key to known_hosts to avoid prompt
-    - ssh-keyscan -H "$REMOTE_HOST" >> ~/.ssh/known_hosts
+    - eval $(ssh-agent)
+    - ssh-add $SSH_PRIVATE_KEY
+    - ssh ec2-user@$REMOTE_HOST
 
 
 
