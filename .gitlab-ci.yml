@@ -184,7 +184,11 @@ ssh_depoly:
     - chmod 400 $SSH_PRIVATE_KEY
     - eval $(ssh-agent)
     - ssh-add $SSH_PRIVATE_KEY
-    - ssh -o StrictHostKeyChecking=no ec2-user@$REMOTE_HOST
+    - mkdir -p ~/.ssh
+    - chmod 700 ~/.ssh
+    - cp $KNOW_HOST ~/.ssh/known_hosts
+    - chmod 644 ~/.ssh/known_hosts
+    - ssh ec2-user@$REMOTE_HOST
 
 
 
