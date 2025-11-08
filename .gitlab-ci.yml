@@ -70,7 +70,6 @@ netlify_review:
 e2e:
   image: mcr.microsoft.com/playwright:v1.49.1-noble 
   stage: post_deploy_review
-  needs: ["netlify_review"]
   variables:
     APP_BASE_URL: $DEPLOY_URL
   before_script:
@@ -78,7 +77,14 @@ e2e:
   script:
     - echo $DEPLOY_URL
     - echo $APP_BASE_URL
+    - echo "test github  2"
     - npm run e2e
+  artifacts:
+    when: always
+    paths:
+      - reports/
+    reports:
+      junit: reports/playwright-junit.xml
 
 netlify_staging:
   image: node:22-alpine
