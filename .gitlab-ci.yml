@@ -178,7 +178,7 @@ ssh_depoly:
   stage: .pre
   image: alpine
   script:
-    - nc -zv 18.207.114.208 22
+    - nc -zv "$REMOTE_HOST" 22
 
 
 
