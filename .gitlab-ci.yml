@@ -30,7 +30,7 @@ build_docker_netlify:
     - docker push $CI_REGISTRY_IMAGE/netlify
 
 build_website:
-  image: node:22-alpine
+  image: $CI_REGISTRY_IMAGE/netlify:latest
   stage: build
   script:
     - node --version
@@ -121,7 +121,7 @@ build_website:
     - curl $CI_ENVIRONMENT_URL | grep 'GitLab'
 
 netlify_prod:
-  image: node:22-alpine
+  image: $CI_REGISTRY_IMAGE/netlify:latest
   stage: deploy_prod
   rules:
     - if: $CI_COMMIT_REF_NAME == $CI_DEFAULT_BRANCH
