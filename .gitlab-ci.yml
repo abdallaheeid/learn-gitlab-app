@@ -158,6 +158,8 @@ aws_s3:
  script:
    - aws --version
    - aws s3 ls 
+   - echo "Hallo I am a test file" > hello.txt
+   - aws s3 cp hello.txt s3://$S3_BUCKET_NAME/ci-test/hello.txt
 
 
 
