@@ -20,11 +20,14 @@ build_docker_netlify:
   image: docker:27
   services:
     - docker:27-dind
+  variables:
+    DOCKER_IMAGE: "$CI_REGISTRY_IMAGE/node-netlify:latest"
   script:
     - docker version
     - echo $CI_REGISTRY_PASSWORD | docker login $CI_REGISTRY -u $CI_REGISTRY_USER --password-stdin
     - docker build -t netlify -f ci/Dockerfile .
     - docker image ls
+    - docker push "DOCKER_IMAGE"
 
 build_website:
   image: node:22-alpine
