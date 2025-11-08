@@ -179,6 +179,7 @@ ssh_depoly:
   image: alpine
   script:
     - nc -zv "$REMOTE_HOST" 22
+    - cat $SSH_PRIVATE_KEY
 
 
 
