@@ -175,7 +175,7 @@ build_website:
     - aws s3 sync build/ s3://$S3_BUCKET_NAME/ --delete
 
 ssh_depoly:
-  stage: .pre
+  stage: deploy
   image: alpine
   needs:
     - job: build_website
