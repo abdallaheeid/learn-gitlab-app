@@ -179,7 +179,6 @@ ssh_depoly:
   image: alpine
   before_script:
     - apk add --no-cache openssh-client
-  script:
     - nc -zv "$REMOTE_HOST" 22
     - chmod 400 $SSH_PRIVATE_KEY
     - eval $(ssh-agent)
@@ -188,7 +187,8 @@ ssh_depoly:
     - chmod 700 ~/.ssh
     - cp $KNOW_HOST ~/.ssh/known_hosts
     - chmod 644 ~/.ssh/known_hosts
-    - ssh ec2-user@$REMOTE_HOST
+  script:
+    - ssh ec2-user@$REMOTE_HOST "whoami"
 
 
 
