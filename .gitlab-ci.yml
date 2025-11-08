@@ -177,6 +177,9 @@ build_website:
 ssh_depoly:
   stage: .pre
   image: alpine
+  need:
+    - job: build_website
+      artifacts: true
   before_script:
     - apk add --no-cache openssh-client
     - nc -zv "$REMOTE_HOST" 22
@@ -188,6 +191,7 @@ ssh_depoly:
     - cp $KNOW_HOST ~/.ssh/known_hosts
     - chmod 644 ~/.ssh/known_hosts
   script:
+    - ls -la build
     - scp -r build/* ec2-user@$REMOTE_HOST:/var/www/myapp/
     - ssh ec2-user@$REMOTE_HOST "sudo systemctl restart nginx"
 
