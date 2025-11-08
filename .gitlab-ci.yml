@@ -8,11 +8,21 @@ variables:
 
 stages:
   - build
-  - test
-  - deploy_review
-  - post_deploy_review
-  - deploy_staging
+  # - test
+  # - deploy_review
+  # - post_deploy_review
+  # - deploy_staging
+  - test_docker
   - deploy_prod
+
+test_docker:
+  stage: .pre
+  image: docker
+  services:
+    - docker: dind
+  script:
+    - docker --version
+    - docker version
 
 build_website:
   image: node:22-alpine
