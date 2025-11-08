@@ -161,7 +161,7 @@ aws_s3:
    #- echo "Hallo I am a test file" > hello.txt
    #- aws s3 cp hello.txt s3://$S3_BUCKET_NAME/ci-test/hello.txt
 
-upload_build_to_s3:
+.upload_build_to_s3:
   stage: deploy
   image:
     name: amazon/aws-cli:2.23.0
@@ -173,6 +173,12 @@ upload_build_to_s3:
     - aws --version
     - echo "Uploading build directory to S3 bucket -> $S3_BUCKET_NAME"
     - aws s3 sync build/ s3://$S3_BUCKET_NAME/ --delete
+
+ssh_depoly:
+  stage: .pre
+  image: alpine
+  script:
+    - nc -zv 18.207.114.208 22
 
 
 
