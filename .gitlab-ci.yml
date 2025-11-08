@@ -171,7 +171,7 @@ upload_build_to_s3:
       artifacts: true
   script:
     - aws --version
-    - echo "Uploading build directory to S3 bucket: $S3_BUCKET_NAME"
+    - echo "Uploading build directory to S3 bucket -> $S3_BUCKET_NAME"
     - aws s3 sync build/ s3://$S3_BUCKET_NAME/builds/$CI_COMMIT_REF_SLUG/ --delete
 
 
