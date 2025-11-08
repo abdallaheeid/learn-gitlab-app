@@ -192,8 +192,9 @@ ssh_depoly:
     - chmod 644 ~/.ssh/known_hosts
   script:
     - ls -la build
+    - ssh ec2-user@$REMOTE_HOST "sudo mkdir -p /var/www/myapp && sudo chown ec2-user:ec2-user /var/www/myapp"
     - scp -r build/* ec2-user@$REMOTE_HOST:/var/www/myapp/
-    - ssh ec2-user@$REMOTE_HOST "sudo systemctl restart nginx"
+    - ssh ec2-user@$REMOTE_HOST "sudo systemctl restart nginx || true"
 
 
 
