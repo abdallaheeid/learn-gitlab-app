@@ -150,7 +150,7 @@ build_website:
     paths: 
       - build/
 
-aws_s3:
+.aws_s3:
  stage: .pre
  image: 
   name: amazon/aws-cli:2.23.0
