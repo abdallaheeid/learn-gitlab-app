@@ -194,7 +194,6 @@ ssh_depoly:
     - ls -la build
     - ssh ec2-user@$REMOTE_HOST "sudo mkdir -p /usr/share/nginx/html/ && sudo chown -R ec2-user:ec2-user /usr/share/nginx/html/"
     - scp -r build/* ec2-user@$REMOTE_HOST:/usr/share/nginx/html/
-    - ssh ec2-user@$REMOTE_HOST "sudo systemctl restart nginx || true"
 
 
 
