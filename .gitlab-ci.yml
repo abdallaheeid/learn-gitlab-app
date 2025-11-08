@@ -184,7 +184,7 @@ ssh_depoly:
     - chmod 400 $SSH_PRIVATE_KEY
     - eval $(ssh-agent)
     - ssh-add $SSH_PRIVATE_KEY
-    - ssh ec2-user@$REMOTE_HOST
+    - ssh -o StrictHostKeyChecking=no ec2-user@$REMOTE_HOST
 
 
 
