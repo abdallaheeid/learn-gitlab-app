@@ -27,7 +27,8 @@ build_docker_netlify:
     - echo $CI_REGISTRY_PASSWORD | docker login $CI_REGISTRY -u $CI_REGISTRY_USER --password-stdin
     - docker build -t netlify -f ci/Dockerfile .
     - docker image ls
-    - docker push "DOCKER_IMAGE"
+    - docker build -t registry.gitlab.com/abdallaheid01/learn-gitlab-app .
+    - docker push registry.gitlab.com/abdallaheid01/learn-gitlab-app
 
 build_website:
   image: node:22-alpine
