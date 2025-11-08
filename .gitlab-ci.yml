@@ -177,7 +177,7 @@ build_website:
 ssh_depoly:
   stage: .pre
   image: alpine
-  need:
+  needs:
     - job: build_website
       artifacts: true
   before_script:
