@@ -19,7 +19,7 @@ build_docker_netlify:
   stage: .pre
   image: docker:27
   rules:
-    -if: '$CI_PIPELINE_SOURCE == "schedule"'
+    - if: '$CI_PIPELINE_SOURCE == "schedule"'
   services:
     - docker:27-dind
   variables:
