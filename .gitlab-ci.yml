@@ -22,7 +22,7 @@ build_docker_netlify:
     - docker:27-dind
   script:
     - docker version
-    - echo $CI_REGISTRY_PASSWORD | docker login $CI_REGISTRY -u $CI_REGISTRY_USER
+    - echo $CI_REGISTRY_PASSWORD | docker login $CI_REGISTRY -u $CI_REGISTRY_USER --password-stdin
     - docker build -t netlify -f ci/Dockerfile .
     - docker image ls
 
