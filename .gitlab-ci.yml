@@ -188,7 +188,8 @@ ssh_depoly:
     - cp $KNOW_HOST ~/.ssh/known_hosts
     - chmod 644 ~/.ssh/known_hosts
   script:
-    - ssh ec2-user@$REMOTE_HOST "whoami"
+    - scp -r build/* ec2-user@$REMOTE_HOST:/var/www/myapp/
+    - ssh ec2-user@$REMOTE_HOST "sudo systemctl restart nginx"
 
 
 
