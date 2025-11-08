@@ -35,6 +35,6 @@ ssh_deploy:
     - chmod 644 ~/.ssh/known_hosts
   script:
     # Open SSH connection + run commands
-    - ssh $ec2-user@$REMOTE_DEPLOY_HOST "whoami; touch /tmp/foo.txt; ls -l /tmp"
+    - ssh $ec2-user@$REMOTE_HOST "whoami; touch /tmp/foo.txt; ls -l /tmp"
     # Copy all the directories and files from the build directory (but not build itself) to the remote destination
-    - scp -r build/* $REMOTE_DEPLOY_USER@$REMOTE_DEPLOY_HOST:/usr/share/nginx/html/
+    - scp -r build/* $REMOTE_DEPLOY_USER@$REMOTE_HOST:/usr/share/nginx/html/
