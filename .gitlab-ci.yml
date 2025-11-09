@@ -3,6 +3,11 @@ variables:
   CLUSTER_NAME: "learn-gitlab-cluster-prod"
   SERVICE_NAME: "learn-gitlab-app-td-prod-service"
 
+stages:
+  - build
+  - package
+  - deploy
+
 build_website:
   image: node:22-alpine
   stage: build
@@ -20,7 +25,7 @@ build_docker_image:
   image: 
     name: amazon/aws-cli:2.23.0
     entrypoint: [""]
-  stage: .pre
+  stage: package
   services:
     - docker:27-dind
   variables:
@@ -30,10 +35,10 @@ build_docker_image:
   script:
     - aws --version
     - docker version
-
+    - docker build -t learngitlabapp .
 
 ecs_deploy:
-  stage: .pre
+  stage: deploy
   image: 
     name: amazon/aws-cli:2.23.0
     entrypoint: [""]
