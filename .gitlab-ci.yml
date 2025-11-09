@@ -13,28 +13,11 @@ build_website:
     paths: 
       - build/
 
-ssh_deploy:
-  stage: deploy
-  image: alpine
-  before_script:
-     # Check if port 22 is open on the server
-    - nc -zv $REMOTE_HOST 22
-    # Grant read-only permission to the private key
-    - chmod 400 $SSH_PRIVATE_KEY
-    # Install the OpenSSH client
-    - apk add openssh-client
-    # Start the SSH agent
-    - eval $(ssh-agent)
-    # Add the SSH key to the agent
-    - ssh-add $SSH_PRIVATE_KEY
-    # Create the SSH directory and assign the right permissions
-    - mkdir -p ~/.ssh
-    - chmod 700 ~/.ssh
-    # Create the known_hosts files and assign the right permissions
-    - cp $KNOW_HOST ~/.ssh/known_hosts
-    - chmod 644 ~/.ssh/known_hosts
+ecs_deploy:
+  stage: .pre
+  image: 
+    name: amazon/aws-cli:2.23.0
+    entrypoint: [""]
   script:
-    # Open SSH connection + run commands
-    - ssh ec2-user@$REMOTE_HOST "whoami; touch /tmp/foo.txt; ls -l /tmp"
-    # Copy all the directories and files from the build directory (but not build itself) to the remote destination
-    - scp -r build/* ec2-user@$REMOTE_HOST:/usr/share/nginx/html/
+    - aws --version
+    - aws ecs register-task-definition --cli-input-json file://aws/td-prod.json
